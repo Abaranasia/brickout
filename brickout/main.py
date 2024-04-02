@@ -4,6 +4,8 @@ import pygame
 def main():
 
 # Game items
+    
+# Ball
     class Ball(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
@@ -27,6 +29,7 @@ def main():
             # Move
             self.rect.move_ip(self.speed)
 
+# Paddle
     class Paddle(pygame.sprite.Sprite):
         def __init__(self):
             pygame.sprite.Sprite.__init__(self)
@@ -40,15 +43,42 @@ def main():
             self.speed= [0, 0]
 
         def update(self, event):
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT and self.rect.left > 0:
                 self.speed = [-5, 0]
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT  and self.rect.right < screen_width:
                 self.speed = [5, 0]
             else:
                 self.speed = [0, 0]
             
             # Move
             self.rect.move_ip(self.speed)
+
+# Brick
+    class Brick(pygame.sprite.Sprite):
+        def __init__(self, position):
+            pygame.sprite.Sprite.__init__(self)
+            self.image = pygame.image.load('brickout/assets/brick.png')
+            self.rect = self.image.get_rect()
+
+            # Brick initial position
+            self.rect.topleft = position
+
+# Wall
+    class Wall(pygame.sprite.Group):
+        def __init__(self, brick_quantity ):
+            pygame.sprite.Group.__init__(self)
+
+            pos_x = 0
+            pos_y = 20
+            for i in range(brick_quantity):
+                brick = Brick((pos_x,pos_y))
+                self.add(brick)
+                pos_x += brick.rect.width
+
+                if pos_x >= screen_width:
+                    pos_x = 0
+                    pos_y += brick.rect.height
+
 
 # Game setup
     screen_width = 800
@@ -60,8 +90,10 @@ def main():
     clock = pygame.time.Clock() # game clock interval
     pygame.key.set_repeat(10) # adjust key repetition on press down
 
+    # Game element instances
     ball = Ball()
     player = Paddle()
+    wall = Wall(120)
 
 # Game logic
     while True:
@@ -82,7 +114,7 @@ def main():
         screen.fill(background)
         screen.blit(ball.image, ball.rect)
         screen.blit(player.image, player.rect)
-
+        wall.draw(screen)
         # Update screen items
         pygame.display.flip()
 
