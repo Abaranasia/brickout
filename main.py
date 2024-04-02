@@ -1,16 +1,50 @@
 import sys
 import pygame
 
-# Basic setup
-width = 800
-heigth = 600
-screen = pygame.display.set_mode((width, heigth))
-pygame.display.set_caption('Brickout')
+# Game setup
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Brickout') # window title
+
+clock = pygame.time.Clock()
+background = (0, 0, 64)
+
+# Ball class
+class Ball(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('brickout/assets/ball.png')
+        self.rect = self.image.get_rect()
+
+        # Ball initial position (screen center)
+        self.rect.centerx = screen_width / 2
+        self.rect.centery = screen_height / 2
+
+        # Ball speed
+        self.speed= [3, 3]
+
+    def update(self):
+        # Move
+        self.rect.move_ip(self.speed)
+
+
+ball = Ball()
 
 while True:
+    # Set FPS
+    clock.tick(60)
+
     # Check events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+    
+    # Update ball position
+    ball.update()
 
+    # Paint elements in screen
+    screen.fill(background)
+    screen.blit(ball.image, ball.rect)
+    # Update screen items
     pygame.display.flip()
