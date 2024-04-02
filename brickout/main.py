@@ -8,7 +8,10 @@ def main():
     screen_width = 800
     screen_height = 600
     background = (0, 0, 64)
-    
+    text_color = (255, 255, 255)
+    player_score = 0
+    available_fonts= pygame.font.get_fonts()
+
     pygame.init()
     
 # Ball
@@ -77,7 +80,7 @@ def main():
             pygame.sprite.Group.__init__(self)
 
             pos_x = 0
-            pos_y = 20
+            pos_y = 25
             for i in range(brick_quantity):
                 brick = Brick((pos_x,pos_y))
                 self.add(brick)
@@ -89,15 +92,23 @@ def main():
 
 # Game over logic
     def game_over():
-        available_fonts= pygame.font.get_fonts()
         message_font = pygame.font.SysFont(available_fonts[0], 72)
-        message = message_font.render('Game over :/ ', True, (255, 255, 255))
+        message = message_font.render('Game over :/ ', True, text_color)
         message_rect = message.get_rect()
         message_rect.center = [screen_width / 2, screen_height / 2]
         screen.blit(message, message_rect)
         pygame.display.flip()
         time.sleep(3)
         sys.exit()
+
+# Player score logic
+    def display_score():
+        score_font = pygame.font.SysFont(available_fonts[2], 20)
+        score = score_font.render(str(player_score).zfill(5), True, text_color)
+        score_rect = score.get_rect()
+        score_rect.topleft =  [0, 0]
+        screen.blit(score, score_rect)
+        pygame.display.flip()
 
 # Game setup
     screen = pygame.display.set_mode((screen_width, screen_height)) # screen size
@@ -137,7 +148,8 @@ def main():
                 ball.speed[0] = - ball.speed[0]
             else: 
                 ball.speed[1] = - ball.speed[1]
-            wall.remove(collided_brick)  # Remove a sprite from a group 
+            wall.remove(collided_brick)  # Remove a sprite from a group
+            player_score += 10
         
         # Check if ball rebase bottom boudary 
         if ball.rect.top > screen_height:
@@ -148,6 +160,7 @@ def main():
         screen.blit(ball.image, ball.rect)
         screen.blit(player.image, player.rect)
         wall.draw(screen)
+        display_score()
         
         # Update screen items
         pygame.display.flip()
