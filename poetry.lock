@@ -137,4 +137,4 @@ testing = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygm
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "760fd87a7774a0f80f8dcdc694eadb8e08bfbd6e01b3451d9d89edb895bb5dd7"
+content-hash = "e01308c30cff0852bc2f7e5aaa1ad78b438c9920cd7b5d75cef326035f686058"
