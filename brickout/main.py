@@ -110,6 +110,20 @@ def main():
         # Update ball position
         ball.update()
 
+        # Collision management
+        if pygame.sprite.collide_rect(ball, player): # ball vs player
+            ball.speed[1] = - ball.speed[1]
+        
+        collided_brick_list= pygame.sprite.spritecollide(ball, wall, False)
+        if collided_brick_list: 
+            collided_brick = collided_brick_list[0]
+            cx = ball.rect.centerx
+            if cx < collided_brick.rect.left or cx > collided_brick.rect.right:
+                ball.speed[0] = - ball.speed[0]
+            else: 
+                ball.speed[1] = - ball.speed[1]
+            wall.remove(collided_brick)      
+
         # Paint elements in screen
         screen.fill(background)
         screen.blit(ball.image, ball.rect)
