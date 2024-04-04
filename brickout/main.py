@@ -94,7 +94,7 @@ class Scene_level1(Scene):
         # Game element instances
         self.ball = Ball()
         self.player = Paddle()
-        self.wall = Wall_easy(self.bricks_counter)
+        self.wall = Wall(self.bricks_counter, 0, 125)
         self.current_level = 1
 
 
@@ -177,7 +177,7 @@ class Scene_level2(Scene):
         # Game element instances
         self.ball = Ball()
         self.player = Paddle()
-        self.wall = Wall_middle(self.bricks_counter)
+        self.wall = Wall(self.bricks_counter, 0, 25)
 
 
         self.player_score = 0
@@ -331,27 +331,10 @@ class Brick(pygame.sprite.Sprite):
         self.rect.topleft = position
 
 # Wall
-class Wall_easy(pygame.sprite.Group):
-    def __init__(self, brick_quantity ):
+class Wall(pygame.sprite.Group):
+    def __init__(self, brick_quantity, pos_x, pos_y ):
         pygame.sprite.Group.__init__(self)
 
-        pos_x = 0
-        pos_y = 125
-        for i in range(brick_quantity):
-            brick = Brick((pos_x,pos_y))
-            self.add(brick)
-            pos_x += brick.rect.width
-
-            if pos_x >= screen_width:
-                pos_x = 0
-                pos_y += brick.rect.height
-
-class Wall_middle(pygame.sprite.Group):
-    def __init__(self, brick_quantity ):
-        pygame.sprite.Group.__init__(self)
-
-        pos_x = 0
-        pos_y = 25
         for i in range(brick_quantity):
             brick = Brick((pos_x,pos_y))
             self.add(brick)
