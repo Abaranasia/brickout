@@ -9,10 +9,11 @@ poetry run gunicorn -w 4 myapp:app # to serve
 
 # Planned upgrades:
 
-- Refactor to extract global values
-- Refactor to extract object classes
+- Refactor to extract global values (done)
+- Refactor to extract object classes (done)
 - Refactor to extract helper functions
-- Refactor to create different levels
+- Refactor to extract scenes
+- Create strcuture to manage different levels
 - Make player score and lives persistent among levels
 - Add start screen scene 
 - Fix level transition scene
