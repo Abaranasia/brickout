@@ -16,24 +16,6 @@ def main():
 
     pygame.init()
 
-class Scene:
-    def __init__(self):
-        self.next_scene = False
-        self.playing = True
-
-    def event_handlers(self, events):
-        pass
-
-    def update(self):
-        pass
-
-    def display(self, screen):
-        pass
-
-    def screen_switch(self, scene):
-        self.next_scene = scene
-
-
 # Ball
     class Ball(pygame.sprite.Sprite):
         def __init__(self):
