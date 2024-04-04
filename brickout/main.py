@@ -2,13 +2,16 @@ import sys
 import time
 import pygame
 
+# Import global values
+from brickout.game_globals import *
+
+# Import main objects
+from brickout.objects.ball import Ball
+from brickout.objects.paddle import Paddle
+from brickout.objects.wall import Wall
+
 # Game items
-screen_width = 800
-screen_height = 600
-background = (0, 0, 64)
-text_color = (255, 255, 255)
-initial_FPS = 125
-start_level = 1
+
 
 available_fonts = pygame.font.get_fonts()
 
@@ -269,80 +272,6 @@ class Scene_game_over(Scene):
         self.message_rect = self.message.get_rect()
         self.message_rect.center = [screen_width / 2, screen_height / 2]
         screen.blit(self.message, self.message_rect)
-
-# Ball
-class Ball(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('brickout/assets/ball.png')
-        self.rect = self.image.get_rect()
-
-        # Ball initial position (screen center)
-        self.rect.centerx = screen_width / 2
-        self.rect.centery = screen_height / 2
-
-        # Ball speed
-        self.speed= [3, 3]
-
-    def update(self):
-        # Boundaries collision detection
-        # if self.rect.bottom >= screen_height or self.rect.top <= 0:
-        if self.rect.top <= 0: # Check only top to allow player dead
-            self.speed[1] = -self.speed[1]
-        elif self.rect.right >= screen_width or self.rect.left <= 0:
-            self.speed[0] = -self.speed[0]
-
-        # Move
-        self.rect.move_ip(self.speed)
-
-# Paddle
-class Paddle(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('brickout/assets/paddle.png')
-        self.rect = self.image.get_rect()
-
-        # Paddle initial position (screen center)
-        self.rect.midbottom = (screen_width / 2, screen_height -20)
-
-        # Paddle speed
-        self.speed= [0, 0]
-
-    def update(self, event):
-        # Player event handlers
-        if event.key == pygame.K_LEFT and self.rect.left > 0:
-            self.speed = [-5, 0]
-        elif event.key == pygame.K_RIGHT  and self.rect.right < screen_width:
-            self.speed = [5, 0]
-        else:
-            self.speed = [0, 0]
-        
-        # Move
-        self.rect.move_ip(self.speed)
-
-# Brick
-class Brick(pygame.sprite.Sprite):
-    def __init__(self, position):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('brickout/assets/brick.png')
-        self.rect = self.image.get_rect()
-
-        # Brick initial position
-        self.rect.topleft = position
-
-# Wall
-class Wall(pygame.sprite.Group):
-    def __init__(self, brick_quantity, pos_x, pos_y ):
-        pygame.sprite.Group.__init__(self)
-
-        for i in range(brick_quantity):
-            brick = Brick((pos_x,pos_y))
-            self.add(brick)
-            pos_x += brick.rect.width
-
-            if pos_x >= screen_width:
-                pos_x = 0
-                pos_y += brick.rect.height
 
 # Player score logic
 def display_player_score(screen, player_score):
